@@ -9,4 +9,7 @@ public interface IAuthor
     void Update (Author author);
     Author GetAuthor(int id);
     List<Author> GetAuthors();
+    int GetAuthorAmount();
+    int GetMinPublisheyearByAuthor(int id);
+    int GetMaxPublisheyearByAuthor(int id);
 }

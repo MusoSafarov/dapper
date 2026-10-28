@@ -25,6 +25,23 @@ public class BookRepositories : IBook
         Console.WriteLine("Deleted!");
     }
 
+    public int GetAmountByGenre(int genreId)
+    {
+        using var conn = Database.Connection();
+        conn.Open();
+        var query = "select Count(*) from book where genreid = @genreId";
+        return conn.ExecuteScalar<int>(query,new{genreId});
+    }
+
+    public int GetAmountByPublishedYear(int year)
+    {
+        using var conn = Database.Connection();
+        conn.Open();
+        var query = "select Count(*) from book where publishedyeat = @year";
+        return conn.ExecuteScalar<int>(query,new{year});   
+    }
+
+
     public Book GetBook(int id)
     {
         using var conn = Database.Connection();
@@ -34,20 +51,32 @@ public class BookRepositories : IBook
         return book;    
     }
 
+    public int GetBookAmount()
+    {
+        using var conn = Database.Connection();
+        conn.Open();
+        var  query = "select COUNT(*) from book";
+        int cmd = conn.ExecuteScalar<int>(query);
+        return cmd;
+    }
+
+
     public List<Book> GetBookByAuthor(string authorname)
     {
         using var conn = Database.Connection();
         conn.Open();
-        var query = conn.Query<Book>($"select * from book join author on book.AuthorId=author.Id where author.fullname = {new{authorname}}");
-        return query.ToList();
+        var query = $"select * from book join author on book.AuthorId=author.Id where author.fullname = @authorname";
+        var book = conn.Query<Book>(query,new{authorname});
+        return book.ToList();
     }
 
     public List<Book> GetBookByGenre(string genrename)
     {
         using var conn = Database.Connection();
         conn.Open();
-        var query = conn.Query<Book>($"select * from book join genre on book.GenreId=genre.Id where gener.name = {new{genrename}}");
-        return query.ToList();
+        var query = $"select * from book join genre on book.GenreId=genre.Id where gener.name = @genrename";
+        var book = conn.Query<Book>(query,new{genrename});
+        return book.ToList();
     }
 
 

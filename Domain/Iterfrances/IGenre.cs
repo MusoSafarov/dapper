@@ -9,4 +9,7 @@ public interface IGenre
     void UpdateGenre (Genre genre);
     Genre GetGenre(int id);
     List<Genre> GetGenres();
+    int GetGenreAmount();
+    int GetMinPublisheyearByGenre(int id);
+    int GetMaxPublisheyearByGenre(int id);
 }

@@ -9,4 +9,7 @@ public interface IBook
     List<Book> GetBooks();
     List<Book> GetBookByAuthor(string authorname);
     List<Book> GetBookByGenre(string genrename);
+    int GetBookAmount();
+    int GetAmountByPublishedYear(int year);
+    int GetAmountByGenre(int genreId);
 }

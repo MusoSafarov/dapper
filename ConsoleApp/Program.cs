@@ -1,216 +1,296 @@
-﻿using System.Runtime.CompilerServices;
-using Domain;
+﻿using Domain;
 using Domain.Models;
 using Infrastructure.Repositories;
 
-var now1 = new AuthorRepositories();
-var now = new BookRepositories();
-var mma = new GenreRepository();
+var re = new BookRepositories();
+var au = new AuthorRepositories();
+var ge = new GenreRepository();
 
 while (true)
 {
-    Console.WriteLine("==============================");
-    Console.WriteLine(@"    1.Show all authors.
-    2.Show author by id.
-    3.Add author.
-    4.Delete author.
-    5.Update author.
-    6.Show all books.
-    7.Show book by id.
-    8.Add books.
-    9.Delete books.
-    10.Update books.
-    11.Show all genres.
-    12.Show genre by id.
-    13.Add genres.
-    14.Delete genres.
-    15.Update genres.
-    16.GetBookByAythor.
-    17.GetBookByGenre.
-    0. Exits");
+    Console.WriteLine("======================================");
+    Console.WriteLine(@"
+    Table Books!
+    1. Show all books.
+    2. Show book by id.
+    3. Add new book.
+    4. Update book.
+    5. Delete book.
+    6. Get books by author.
+    7. Get books by genre.
+    8. Get books amount.
+    9. Get amount by published year.
+    10. Get amount by genre.
+
+    Table Authors!
+    11. Show all authors.
+    12. Show author by id.
+    13. Add new author.
+    14. Update author.
+    15. Delete author.
+    16. Get authors amount.
+    17. Getminpublishedyearbyauthor.
+    18. Getmaxpublishedyearbyauthor.
+
+    Table Genres!
+    19. Show all genres.
+    20. Show genre by id.
+    21. Add new genre.
+    22. Update genre.
+    23. Delete genre.
+    24. Get genres amount.
+    25. Get min published year by genre.
+    26. Get max published year by genre.
+    0. Exit.");
     var a = Console.ReadLine();
-    Console.WriteLine("==============================");
+    Console.WriteLine("======================================");
+
     switch (a)
     {
         case "1":
-        var authors = now1.GetAuthors();
-        foreach (var item in authors)
-        {
-            System.Console.WriteLine($"{item.Id} {item.fullname} {item.country} {item.birthyear}");
-        }
-        break;
+            var books = re.GetBooks();
+            foreach (var item in books)
+            {
+                Console.WriteLine($"{item.Id} | {item.Title} | {item.Publishedyear} | {item.Totalcopies} | {item.authorId} | {item.genreId}");
+            }
+            break;
+
         case "2":
-        Console.Write("Enter id: ");
-        var d = Convert.ToInt32(Console.ReadLine());
-        var get = now1.GetAuthor(d);
-        System.Console.WriteLine($"{get.Id} {get.fullname} {get.country} {get.birthyear}");
+            Console.Write("Enter id: ");
+            var id = Convert.ToInt32(Console.ReadLine());
+            var book = re.GetBook(id);
+            Console.WriteLine($"{book.Id} | {book.Title} | {book.Publishedyear} | {book.Totalcopies}");
         break;
+
         case "3":
-        Console.Write("Enter fullname: ");
-        var t = Console.ReadLine();
-        Console.Write("Enter country: ");
-        var p = Console.ReadLine();
-        Console.Write("Enter birthyear: ");
-        var tc = Convert.ToInt32(Console.ReadLine());
-        var m = new Author()
-        {
-            fullname = t,
-            country = p,
-            birthyear = tc
-        };
-        now1.Add(m);
-        break;
+            Console.Write("Enter title: ");
+            var title = Console.ReadLine()!;
+            Console.Write("Enter published year: ");
+            var year = Convert.ToInt32(Console.ReadLine());
+            Console.Write("Enter total copies: ");
+            var copies = Convert.ToInt32(Console.ReadLine());
+            Console.Write("Enter author id: ");
+            var authorId = Convert.ToInt32(Console.ReadLine());
+            Console.Write("Enter genre id: ");
+            var genreId = Convert.ToInt32(Console.ReadLine());
+            var books1 = new Book()
+            {
+                Title = title,
+                Publishedyear = year,
+                Totalcopies = copies,
+                authorId = authorId,
+                genreId = genreId
+            };
+            re.AddBook(books1);
+            break;
+
         case "4":
-        Console.Write("Enetr id for delete: ");
-        var id = Convert.ToInt32(Console.ReadLine());
-        now1.Delete(id);
-        break;
+            Console.Write("Enter book id: ");
+            var idd = Convert.ToInt32(Console.ReadLine());
+            Console.Write("Enter title: ");
+            var titlee = Console.ReadLine()!;
+            Console.Write("Enter published year: ");
+            var yeare = Convert.ToInt32(Console.ReadLine());
+            Console.Write("Enter total copies: ");
+            var copiess = Convert.ToInt32(Console.ReadLine());
+            Console.Write("Enter author id: ");
+            var authorIds = Convert.ToInt32(Console.ReadLine());
+            Console.Write("Enter genre id: ");
+            var genreIds = Convert.ToInt32(Console.ReadLine());
+            var books2 = new Book()
+            {
+                Id = idd,
+                Title = titlee,
+                Publishedyear = yeare,
+                Totalcopies = copiess,
+                authorId = authorIds,
+                genreId = genreIds
+            };
+
+            re.UpdateBook(books2);
+            break;
+
         case "5":
-        Console.Write("Enetr id for update: ");
-        var h = Convert.ToInt32(Console.ReadLine());
-        Console.Write("Enter fullname for update: ");
-        var tt = Console.ReadLine();
-        Console.Write("Enter country for update: ");
-        var pp = Console.ReadLine();
-        Console.Write("Enter birthyear for update: ");
-        var tcc = Convert.ToInt32(Console.ReadLine());
-        var o = new Author()
-        {
-            Id = h,
-            fullname = tt,
-            country = pp,
-            birthyear = tcc
-        };
-        now1.Update(o);
-        break;
+            Console.Write("Enter book id: ");
+            var i = Convert.ToInt32(Console.ReadLine());
+            re.DeleteBook(i);
+            break;
 
         case "6":
-        var books = now.GetBooks();
-        foreach (var item in books)
-        {
-            System.Console.WriteLine($"{item.Id} {item.title} {item.publishedyear} {item.totalcopies} {item.AuthorId} {item.GenreId}");
-        }
-        break;
-        case "7":
-        Console.Write("Enter id: ");
-        var dd = Convert.ToInt32(Console.ReadLine());
-        var gett = now.GetBook(dd);
-        System.Console.WriteLine($"{gett.Id} {gett.title} {gett.publishedyear} {gett.totalcopies} {gett.AuthorId} {gett.GenreId}");
-        break;
-        case "8":
-        Console.Write("Enter title: ");
-        var th = Console.ReadLine();
-        Console.Write("Enter publishedyear: ");
-        var pr = Convert.ToInt32(Console.ReadLine());
-        Console.Write("Enter totalcopies: ");
-        var tccc = Convert.ToInt32(Console.ReadLine());
-        Console.Write("Enter authorId: ");
-        var thg = Convert.ToInt32(Console.ReadLine());
-        Console.Write("Enter genreId: ");
-        var thf = Convert.ToInt32(Console.ReadLine());
-        var l = new Book()
-        {
-            title = th,
-            publishedyear = pr,
-            totalcopies = tccc,
-            AuthorId = thg,
-            GenreId = thf
-        };
-        now.AddBook(l);
-        break;
-        case "9":
-        Console.Write("Enetr id for delete: ");
-        var idd = Convert.ToInt32(Console.ReadLine());
-        now.DeleteBook(idd);
-        break;
-        case "10":
-        Console.Write("Enetr id for update: ");
-        var hl = Convert.ToInt32(Console.ReadLine());
-        Console.Write("Enter title for update: ");
-        var ttf = Console.ReadLine();
-        Console.Write("Enter publishedyear for update: ");
-        var pps = Convert.ToInt32(Console.ReadLine());
-        Console.Write("Enter totalcopies for update: ");
-        var tccd = Convert.ToInt32(Console.ReadLine());
-        Console.Write("Enter authorId for update: ");
-        var ttfg = Convert.ToInt32(Console.ReadLine());
-        Console.Write("Enter genreId for update: ");
-        var ttfn = Convert.ToInt32(Console.ReadLine());
-        var f = new Book()
-        {
-            Id = hl,
-            title = ttf,
-            publishedyear = pps,
-            totalcopies = tccd,
-            AuthorId = ttfg,
-            GenreId = ttfn
-        };
-        now.UpdateBook(f);
-        break;
+            Console.Write("Enter author name: ");
+            var authorName = Console.ReadLine()!;
+            var books3 = re.GetBookByAuthor(authorName);
+            foreach (var item in books3)
+            {
+                Console.WriteLine($"{item.Id} | {item.Title} | {item.Publishedyear}");
+            }
+            break;
+            case "7":
+            Console.Write("Enter genre name: ");
+            var genreName = Console.ReadLine()!;
+            var books4 = re.GetBookByGenre(genreName);
+            foreach (var item in books4)
+            {
+                Console.WriteLine($"{item.Id} | {item.Title}");
+            }
+            break;
 
-         case "11":
-        var genres = mma.GetGenres();
-        foreach (var item in genres)
-        {
-            System.Console.WriteLine($"{item.Id} {item.Name}");
-        }
-        break;
+        case "8":
+            var bookAmount = re.GetBookAmount();
+            Console.WriteLine($"Books amount: {bookAmount}");
+            break;
+
+        case "9":
+            Console.Write("Enter published year: ");
+            var publishedYear = Convert.ToInt32(Console.ReadLine());
+            var amountByYear = re.GetAmountByPublishedYear(publishedYear);
+            Console.WriteLine($"Books amount: {amountByYear}");
+            break;
+        case "10":
+            Console.Write("Enter genre id: ");
+            var genreId1 = Convert.ToInt32(Console.ReadLine());
+            var amountByGenre = re.GetAmountByGenre(genreId1);
+            Console.WriteLine($"Books amount by genre: {amountByGenre}");
+            break;
+        case "11":
+            var authors = au.GetAuthors();
+            foreach (var item in authors)
+            {
+                Console.WriteLine($"{item.Id} | {item.Fullname} | {item.Country} | {item.Birthyear}");
+            }
+            break;
+
         case "12":
-        Console.Write("Enter id: ");
-        var dj = Convert.ToInt32(Console.ReadLine());
-        var getk = mma.GetGenre(dj);
-        System.Console.WriteLine($"{getk.Id} {getk.Name}");
-        break;
+            Console.Write("Enter author id: ");
+            var idi = Convert.ToInt32(Console.ReadLine());
+            var author = au.GetAuthor(idi);
+            Console.WriteLine($"{author.Id} | {author.Fullname} | {author.Country} | {author.Birthyear}");
+            break;
+
         case "13":
-        Console.Write("Enter name: ");
-        var ta = Console.ReadLine();
-        var mdd = new Genre()
-        {
-            Name = ta
-        };
-        mma.AddGenre(mdd);
-        break;
+            Console.Write("Enter fullname: ");
+            var fullname = Console.ReadLine()!;
+            Console.Write("Enter country: ");
+            var country = Console.ReadLine()!;
+            Console.Write("Enter birth year: ");
+            var birthyear = Convert.ToInt32(Console.ReadLine());
+            var authorr = new Author()
+            {
+                Fullname = fullname,
+                Country = country,
+                Birthyear = birthyear
+            };
+            au.Add(authorr);
+            break;
+
         case "14":
-        Console.Write("Enetr id for delete: ");
-        var idf= Convert.ToInt32(Console.ReadLine());
-        mma.DeleteGenre(idf);
-        break;
+            Console.Write("Enter author id: ");
+            var idid = Convert.ToInt32(Console.ReadLine());
+            Console.Write("Enter fullname: ");
+            var fullnam = Console.ReadLine()!;
+            Console.Write("Enter country: ");
+            var countr= Console.ReadLine()!;
+            Console.Write("Enter birth year: ");
+            var birthyea = Convert.ToInt32(Console.ReadLine());
+            var authors1 = new Author()
+            {
+                Id = idid,
+                Fullname = fullnam,
+                Country = countr,
+                Birthyear = birthyea
+            };
+            au.Update(authors1);
+            break;
+
         case "15":
-        Console.Write("Enetr id for update: ");
-        var hi = Convert.ToInt32(Console.ReadLine());
-        Console.Write("Enter name for update: ");
-        var tb = Console.ReadLine();
-        var ol = new Genre()
-        {
-            Id = hi,
-            Name = tb
-        };
-        mma.UpdateGenre(ol);
-        break;
+            Console.Write("Enter author id: ");
+            var iddd = Convert.ToInt32(Console.ReadLine());
+            au.Delete(iddd);
+            break;
 
         case "16":
-        Console.Write("Enter author name: ");
-        var rr = Console.ReadLine();
-        var bookss = now.GetBookByAuthor(rr);
-        foreach (var item in bookss)
-        {
-            System.Console.WriteLine($"{item.Id} {item.title} {item.publishedyear} {item.totalcopies} {item.AuthorId} {item.GenreId}");
-        }
-        break;
+            var authorsAmount = au.GetAuthorAmount();
+            Console.WriteLine($"Authors amount: {authorsAmount}");
+            break;
 
         case "17":
-        Console.Write("Enter genre name: ");
-        var rrr = Console.ReadLine();
-        var booksss = now.GetBookByGenre(rrr);
-        foreach (var item in booksss)
-        {
-            System.Console.WriteLine($"{item.Id} {item.title} {item.publishedyear} {item.totalcopies} {item.AuthorId} {item.GenreId}");
-        }
-        break;
+            Console.Write("Enter author id: ");
+            var authorId1 = Convert.ToInt32(Console.ReadLine());
+            var minYearAuthor = au.GetMinPublisheyearByAuthor(authorId1);
+            Console.WriteLine($"Min published year: {minYearAuthor}");
+            break;
+
+        case "18":
+            Console.Write("Enter author id: ");
+            var authorId2 = Convert.ToInt32(Console.ReadLine());
+            var maxYearAuthor = au.GetMaxPublisheyearByAuthor(authorId2);
+            Console.WriteLine($"Max published year: {maxYearAuthor}");
+            break;
+
+        case "19":
+            var genres = ge.GetGenres();
+            foreach (var item in genres)
+            {
+                Console.WriteLine($"{item.Id} | {item.Name}");
+            }
+            break;
+            case "20":
+            Console.Write("Enter genre id: ");
+            var idii = Convert.ToInt32(Console.ReadLine());
+            var genre = ge.GetGenre(idii);
+            Console.WriteLine($"{genre.Id} | {genre.Name}");
+            break;
+
+        case "21":
+            Console.Write("Enter genre name: ");
+            var name = Console.ReadLine()!;
+            var genres1 = new Genre()
+            {
+                Name = name
+            };
+            ge.AddGenre(genres1);
+            break;
+
+        case "22":
+            Console.Write("Enter genre id: ");
+            var idiii = Convert.ToInt32(Console.ReadLine());
+            Console.Write("Enter genre name: ");
+            var names = Console.ReadLine()!;
+            var genr = new Genre()
+            {
+                Id = idiii,
+                Name = names
+            };
+            ge.UpdateGenre(genr);
+            break;
+
+        case "23":
+            Console.Write("Enter genre id: ");
+            var iid = Convert.ToInt32(Console.ReadLine());
+            ge.DeleteGenre(iid);
+            break;
+
+        case "24":
+            var genresAmount = ge.GetGenreAmount();
+            Console.WriteLine($"Genres amount: {genresAmount}");
+            break;
+
+        case "25":
+            Console.Write("Enter genre id: ");
+            var genreId2 = Convert.ToInt32(Console.ReadLine());
+            var minYearGenre = ge.GetMinPublisheyearByGenre(genreId2);
+            Console.WriteLine($"Min published year: {minYearGenre}");
+            break;
+
+        case "26":
+            Console.Write("Enter genre id: ");
+            var genreId3 = Convert.ToInt32(Console.ReadLine());
+            var maxYearGenre = ge.GetMaxPublisheyearByGenre(genreId3);
+            Console.WriteLine($"Max published year: {maxYearGenre}");
+            break;
 
         case "0":
-        System.Console.WriteLine("Exiting ....");
-        return;
+            Console.WriteLine("Exit...");
+            return;
     }
-
 }

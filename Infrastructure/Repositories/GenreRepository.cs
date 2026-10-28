@@ -51,5 +51,28 @@ public class GenreRepository : IGenre
         conn.Execute(query,genre);
         System.Console.WriteLine("Updated!");
     }
+    public int GetGenreAmount()
+    {
+        using var conn = Database.Connection();
+        conn.Open();
+        var  query = "select COUNT(*) from genre";
+        int cmd = conn.ExecuteScalar<int>(query);
+        return cmd;
+    }
 
+    public int GetMinPublisheyearByGenre(int id)
+    {
+        using var conn = Database.Connection();
+        conn.Open();
+        var query = "select min(publishedyear) from book where genreid = @id";
+        return conn.ExecuteScalar<int>(query,new{id}); 
+    }
+
+    public int GetMaxPublisheyearByGenre(int id)
+    {
+        using var conn = Database.Connection();
+        conn.Open();
+        var query = "select max(publishedyear) from book where genreid = @id";
+        return conn.ExecuteScalar<int>(query,new{id}); 
+    }
 }
