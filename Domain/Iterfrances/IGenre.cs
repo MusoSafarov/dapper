@@ -4,12 +4,12 @@ namespace Domain.Interfrances;
 
 public interface IGenre
 {
-    void AddGenre(Genre genre);
-    void DeleteGenre (int id);
-    void UpdateGenre (Genre genre);
-    Genre GetGenre(int id);
-    List<Genre> GetGenres();
-    int GetGenreAmount();
-    int GetMinPublisheyearByGenre(int id);
-    int GetMaxPublisheyearByGenre(int id);
+    Task  AddGenre(Genre genre);
+    Task  DeleteGenre (int id);
+    Task  UpdateGenre (Genre genre);
+    Task <Genre> GetGenre(int id);
+    Task <List<Genre>> GetGenres();
+    Task <int> GetGenreAmount();
+    Task <int> GetMinPublisheyearByGenre(int id);
+    Task <int> GetMaxPublisheyearByGenre(int id);
 }

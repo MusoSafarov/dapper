@@ -4,12 +4,12 @@ namespace Domain.Interfrances;
 
 public interface IAuthor
 {
-    void Add(Author author);
-    void Delete (int id);
-    void Update (Author author);
-    Author GetAuthor(int id);
-    List<Author> GetAuthors();
-    int GetAuthorAmount();
-    int GetMinPublisheyearByAuthor(int id);
-    int GetMaxPublisheyearByAuthor(int id);
+    Task  Add(Author author);
+    Task  Delete (int id);
+    Task  Update (Author author);
+    Task <Author> GetAuthor(int id);
+    Task <List<Author>> GetAuthors();
+    Task <int> GetAuthorAmount();
+    Task <int> GetMinPublisheyearByAuthor(int id);
+    Task <int> GetMaxPublisheyearByAuthor(int id);
 }

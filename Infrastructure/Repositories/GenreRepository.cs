@@ -8,71 +8,71 @@ namespace Infrastructure.Repositories;
 
 public class GenreRepository : IGenre
 {
-    public void AddGenre(Genre genre)
+    public async Task  AddGenre(Genre genre)
     {
         using var conn = Database.Connection();
         conn.Open();
         var query = $"insert into genre(name) values(@name)";
-        conn.Execute(query, new{genre.Name});
+        await conn.ExecuteAsync(query, new{genre.Name});
         Console.WriteLine("Added!");
     }
 
-    public void DeleteGenre(int id)
+    public async Task  DeleteGenre(int id)
     {
         using var conn = Database.Connection();
         conn.Open();
         var query = $"delete from genre where id = @id";
-        conn.Execute(query,new{id});
+        await conn.ExecuteAsync (query,new{id});
         Console.WriteLine("Deleted!");
     }
 
-    public Genre GetGenre(int id)
+    public async Task  <Genre> GetGenre(int id)
     {
         using var conn = Database.Connection();
         conn.Open();
         var query = $"select * from genre where id = @id";
-        var genre = conn.QuerySingle<Genre>(query,new{id});
+        var genre = await conn.QuerySingleAsync<Genre>(query,new{id});
         return genre;
     }
 
-    public List<Genre> GetGenres()
+    public async Task  <List<Genre>> GetGenres()
     {
         using var conn = Database.Connection();
         conn.Open();
-        var query = conn.Query<Genre>($"select * from genre");
+        var query = await conn.QueryAsync<Genre>($"select * from genre");
         return query.ToList();
     }
 
-    public void UpdateGenre(Genre genre)
+    public async  Task  UpdateGenre(Genre genre)
     {
         using var conn = Database.Connection();
         conn.Open();
         var query = $"update genre set name = @name where id = @id";
-        conn.Execute(query,genre);
+        await conn.ExecuteAsync(query,genre);
         System.Console.WriteLine("Updated!");
     }
-    public int GetGenreAmount()
+    public async Task < int> GetGenreAmount()
     {
         using var conn = Database.Connection();
         conn.Open();
         var  query = "select COUNT(*) from genre";
-        int cmd = conn.ExecuteScalar<int>(query);
+        int cmd = await conn.ExecuteScalarAsync <int>(query);
         return cmd;
     }
 
-    public int GetMinPublisheyearByGenre(int id)
+    public async Task < int> GetMinPublisheyearByGenre(int id)
     {
         using var conn = Database.Connection();
         conn.Open();
         var query = "select min(publishedyear) from book where genreid = @id";
-        return conn.ExecuteScalar<int>(query,new{id}); 
+        return await  conn.ExecuteScalarAsync <int>(query,new{id}); 
     }
 
-    public int GetMaxPublisheyearByGenre(int id)
+    public async Task  <int> GetMaxPublisheyearByGenre(int id)
     {
         using var conn = Database.Connection();
         conn.Open();
         var query = "select max(publishedyear) from book where genreid = @id";
-        return conn.ExecuteScalar<int>(query,new{id}); 
+        return await  conn.ExecuteScalarAsync <int>(query,new{id}); 
     }
 }
